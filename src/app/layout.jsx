@@ -1,4 +1,5 @@
 import "./globals.css";
+import "dayjs/locale/zh-cn";
 
 export const metadata = {
   title: "EasyTODO",

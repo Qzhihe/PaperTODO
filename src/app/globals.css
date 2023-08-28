@@ -2,9 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .card {
+    background-color: theme("colors.white");
+    border-radius: 4px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .priority_item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    min-height: 2rem;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .priority_item-active::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 75%;
+    height: 75%;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+    background-color: theme("colors.zinc.200");
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
 @layer utilities {
   .route-active {
     border-left: 4px solid theme("colors.orange.500");
     background-color: theme("colors.orange.100");
   }
+}
+
+.priority-high {
+  color: theme("colors.red.500");
+}
+
+.priority-medium {
+  color: theme("colors.yellow.500");
+}
+
+.priority-low {
+  color: theme("colors.blue.500");
+}
+
+.priority-none {
+  color: theme("colors.zinc.500");
 }
