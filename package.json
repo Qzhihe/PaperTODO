@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "paper-todo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,12 +11,15 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/material": "^5.14.5",
+    "@mui/x-date-pickers": "^6.12.0",
     "@prisma/client": "^5.1.1",
     "autoprefixer": "10.4.15",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.9",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "jinrishici": "^1.0.6",
@@ -25,9 +28,11 @@
     "next": "13.4.19",
     "notistack": "^3.0.1",
     "postcss": "8.4.28",
-    "prisma": "^5.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.3"
+  },
+  "devDependencies": {
+    "prisma": "^5.2.0"
   }
 }

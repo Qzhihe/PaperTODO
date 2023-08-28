@@ -9,9 +9,25 @@ export default function SidebarItem({ data }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  function handleRouteChange() {
+    router.replace(href);
+  }
+
   return (
     <li className={`flex h-12 ${pathname === href ? "route-active" : ""}`}>
-      <Button className="w-full" onClick={() => router.replace(href)}>
+      <Button
+        onClick={handleRouteChange}
+        sx={{
+          display: "flex",
+          justifyContent: "start",
+          width: "100%",
+          borderRadius: "none",
+          color: "black",
+          ":hover": {
+            backgroundColor: "#f973161a",
+          },
+        }}
+      >
         <p>{label}</p>
       </Button>
     </li>
