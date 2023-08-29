@@ -1,27 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState, memo } from "react";
 
-const TitleInput = (props) => {
-  const { initialTitle, onTitleChange, onCommit } = props;
+import { FormContext } from "./TodoForm";
 
-  const [title, setTitle] = useState(initialTitle);
+const TitleInput = ({ initialTitle }) => {
+  const dispatch = useContext(FormContext),
+    [title, setTitle] = useState(initialTitle);
 
   useEffect(() => {
-    console.log("TitleInput");
+    setTitle(initialTitle);
+  }, [initialTitle]);
+
+  useEffect(() => {
+    console.log("TitleInput 渲染");
   });
 
   function handleChange(ev) {
     setTitle(ev.target.value);
-    onTitleChange(ev.target.value);
-  }
-
-  function handleKeyDown(ev) {
-    if (ev.key === "Enter") {
-      setTitle("");
-
-      onCommit();
-    }
+    dispatch({ type: "changed_title", nextTitle: ev.target.value });
   }
 
   return (
@@ -29,10 +26,9 @@ const TitleInput = (props) => {
       className="w-full leading-6 outline-none placeholder:text-orange-500 focus:placeholder:text-black"
       placeholder="添加任务"
       value={title}
-      onKeyDown={handleKeyDown}
       onChange={handleChange}
     />
   );
 };
 
-export default TitleInput;
+export default memo(TitleInput);

@@ -22,7 +22,7 @@ model Todo {
   title       String
   date        DateTime?
   reminder    DateTime?
-  priority    Int?
+  priority    Int       @default(0)
   isDone      Boolean   @default(false)
   category    String?
   description String?
