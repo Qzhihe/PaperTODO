@@ -66,7 +66,7 @@ export default function Page() {
               className="text-6xl select-none cursor-pointer"
               onClick={() => randomPoem()}
             >
-              Easy TODO
+              Paper TODO
             </h1>
             <FontAwesomeIcon
               className="w-2 m-2 text-green-500"

@@ -24,3 +24,19 @@ export async function GET(request) {
     console.log(err);
   }
 }
+
+export async function POST(request) {
+  try {
+    const payload = await request.json();
+
+    const result = await db.todo.create({
+      data: {
+        ...payload,
+      },
+    });
+
+    return NextResponse.json(result, { status: 200 });
+  } catch (err) {
+    console.log(err);
+  }
+}

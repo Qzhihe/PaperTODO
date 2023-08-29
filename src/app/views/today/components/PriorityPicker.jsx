@@ -2,14 +2,23 @@
 
 import { IconButton, Tooltip, Menu } from "@mui/material";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
-import { Fragment, memo, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Fragment, memo, useState, useEffect, useContext } from "react";
 
+import { FormContext } from "./TodoForm";
 import { getPriorityTitle, getPriorityTooltip } from "@/lib/priorityUtils";
 
-const PriorityPicker = () => {
-  const [anchor, setAnchor] = useState(null);
-  const [priority, setPriority] = useState(0);
+const PriorityPicker = ({ initialPriority }) => {
+  const dispatch = useContext(FormContext),
+    [anchor, setAnchor] = useState(null),
+    [priority, setPriority] = useState(initialPriority);
+
+  const tooltip = getPriorityTooltip(priority),
+    titleEn = getPriorityTitle(priority, "en");
+
+  useEffect(() => {
+    setPriority(initialPriority);
+  }, [initialPriority]);
 
   useEffect(() => {
     console.log("PriorityPicker 渲染");
@@ -25,15 +34,16 @@ const PriorityPicker = () => {
 
   function handleSelect(priority) {
     setPriority(priority);
+    dispatch({ type: "changed_priority", nextPriority: priority });
     handleClose();
   }
 
   return (
     <Fragment>
-      <Tooltip title={getPriorityTooltip(priority)}>
+      <Tooltip title={tooltip}>
         <IconButton onClick={handleOpen}>
           <FontAwesomeIcon
-            className={`w-4 h-4 priority-${getPriorityTitle(priority, "en")}`}
+            className={`w-4 h-4 priority-${titleEn}`}
             icon={faFlag}
           />
         </IconButton>
@@ -53,14 +63,29 @@ const PriorityPicker = () => {
         <li className="flex flex-col gap-y-2">
           <p className="text-sm text-zinc-400">优先级</p>
           <ul className="flex gap-x-1">
-            {[3, 2, 1, 0].map((item) => (
-              <PriorityItem
-                key={item}
-                priority={item}
-                active={item === priority}
-                onSelect={handleSelect}
-              />
-            ))}
+            {[3, 2, 1, 0].map((item) => {
+              const tooltip = getPriorityTitle(item, "zh"),
+                titleEn = getPriorityTitle(item, "en"),
+                isActive = item === priority;
+
+              return (
+                <Fragment key={item}>
+                  <Tooltip arrow title={`${tooltip}优先级`}>
+                    <li
+                      className={`priority_item hover:bg-zinc-100 ${
+                        isActive ? "priority_item-active" : ""
+                      }`}
+                      onClick={() => handleSelect(item)}
+                    >
+                      <FontAwesomeIcon
+                        className={`absolute w-4 h-4 priority-${titleEn}`}
+                        icon={faFlag}
+                      />
+                    </li>
+                  </Tooltip>
+                </Fragment>
+              );
+            })}
           </ul>
         </li>
       </Menu>
@@ -69,30 +94,3 @@ const PriorityPicker = () => {
 };
 
 export default memo(PriorityPicker);
-
-function PriorityItem(props) {
-  const { priority, onSelect, active } = props;
-
-  function handleClick() {
-    onSelect(props.priority);
-  }
-
-  return (
-    <Tooltip arrow title={getPriorityTitle(priority)}>
-      <li
-        className={`priority_item ${
-          active ? "priority_item-active" : ""
-        } hover:bg-zinc-100`}
-        onClick={handleClick}
-      >
-        <FontAwesomeIcon
-          className={`absolute w-4 h-4 priority-${getPriorityTitle(
-            priority,
-            "en"
-          )}`}
-          icon={faFlag}
-        />
-      </li>
-    </Tooltip>
-  );
-}

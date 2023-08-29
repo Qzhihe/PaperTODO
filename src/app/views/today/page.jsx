@@ -26,7 +26,7 @@ dayjs.extend(localizedFormat);
 
 export default async function page() {
   return (
-    <main className="flex flex-grow flex-col gap-5 px-8 py-4">
+    <main className="flex flex-grow flex-col gap-5 px-8 py-4 overflow-hidden">
       <div className="flex shrink-0 flex-col gap-y-1 p-2 bg-[#f5f5f5]">
         <div className="flex items-center gap-x-2">
           <FontAwesomeIcon className="w-6 h-6" icon={faSun} />
@@ -39,7 +39,7 @@ export default async function page() {
 
       <TodoForm />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 px-1 overflow-auto">
         <TodoList />
         {/* <Catalog title="未完成" count={undoneList.length} /> */}
       </div>
