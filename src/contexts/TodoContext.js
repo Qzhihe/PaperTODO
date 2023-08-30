@@ -3,7 +3,9 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const TodoContext = createContext({});
+import Loading from "@/components/Loading";
+
+export const TodoContext = createContext({});
 
 export default function TodoProvider({ children }) {
   const [todos, setTodos] = useState([]);
@@ -26,7 +28,7 @@ export default function TodoProvider({ children }) {
 
   return (
     <TodoContext.Provider value={{ todos, setTodos }}>
-      {children}
+      {todos.length > 0 ? children : <Loading />}
     </TodoContext.Provider>
   );
 }
