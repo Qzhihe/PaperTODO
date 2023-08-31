@@ -16,8 +16,13 @@ export default function LoginForm() {
         email: "admin",
         password: "admin",
       });
-
-      router.replace("/views/today");
+      console.log(result);
+      if (result.status === 200) {
+        localStorage.setItem('token', result.data.token); // 这个实际上是登陆成功后返回的token
+        router.replace("/views/today");
+      } else {
+        throw new Error('login failed');
+      }
     } catch (err) {
       console.error(err);
     }
