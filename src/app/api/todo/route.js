@@ -11,7 +11,11 @@ export async function GET(request) {
         email: "admin",
       },
       include: {
-        todos: true,
+        todos: {
+          orderBy: {
+            timestamp: "desc",
+          },
+        },
       },
     });
 

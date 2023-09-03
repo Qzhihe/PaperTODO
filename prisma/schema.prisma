@@ -26,6 +26,7 @@ model Todo {
   isDone      Boolean   @default(false)
   category    String?
   description String?
+  timestamp   DateTime
   user        User      @relation(fields: [usrEmail], references: [email])
 
   @@map("todos")
