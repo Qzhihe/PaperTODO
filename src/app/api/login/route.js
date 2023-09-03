@@ -19,9 +19,9 @@ export async function POST(request) {
             );
         }
 
-        return NextResponse.json({ success: "登录成功", token: '模拟数据' }, { status: 200 });
-        // return NextResponse.redirect(new URL('/views/tody', request.url));
-    } catch (err) {
-        console.log('A?', err);
-    }
+    return NextResponse.json({ success: "登录成功" }, { status: 200 });
+    // return NextResponse.redirect(new URL("/views/today", request.url));
+  } catch (err) {
+    console.log(err);
+  }
 }

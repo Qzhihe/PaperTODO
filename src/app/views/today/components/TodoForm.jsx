@@ -1,5 +1,6 @@
 "use client";
 
+import dayjs from "dayjs";
 import axios from "axios";
 import { createContext, useReducer } from "react";
 import { IconButton, Tooltip } from "@mui/material";
@@ -46,6 +47,7 @@ export default function TodoForm() {
 
       const { data } = await axios.post("/api/todo", {
         usrEmail: "admin",
+        timestamp: dayjs().locale("zh-cn"),
         ...formData,
       });
 

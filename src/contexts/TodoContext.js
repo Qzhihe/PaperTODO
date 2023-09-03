@@ -8,7 +8,7 @@ import Loading from "@/components/Loading";
 export const TodoContext = createContext({});
 
 export default function TodoProvider({ children }) {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -28,7 +28,7 @@ export default function TodoProvider({ children }) {
 
   return (
     <TodoContext.Provider value={{ todos, setTodos }}>
-      {todos.length > 0 ? children : <Loading />}
+      {!!todos ? children : <Loading />}
     </TodoContext.Provider>
   );
 }
