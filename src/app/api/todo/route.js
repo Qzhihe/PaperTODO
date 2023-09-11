@@ -33,11 +33,16 @@ export async function POST(request) {
   try {
     const payload = await request.json();
 
+    let start = performance.now();
+    // 极其耗时
     const result = await db.todo.create({
       data: {
         ...payload,
       },
     });
+    let end = performance.now();
+
+    console.log(end - start, "ms");
 
     return NextResponse.json(result, { status: 200 });
   } catch (err) {

@@ -1,5 +1,6 @@
 "use client";
 
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -24,13 +25,10 @@ export default function TodoList() {
 }
 
 const TodoItem = ({ initialTodo }) => {
-  const { title, priority } = initialTodo;
+  const { title, priority, date, reminder } = initialTodo;
 
   function getPriorityClassName() {
     switch (priority) {
-      case 0: {
-        return "hidden";
-      }
       case 1: {
         return "text-blue-500 bg-blue-500/20";
       }
@@ -50,14 +48,19 @@ const TodoItem = ({ initialTodo }) => {
         icon={faCircleNotch}
       />
 
-      <div className="flex flex-col justify-evenly h-full">
+      <div className="flex flex-col justify-center h-full">
         <p className="text-sm">{title}</p>
         <ul>
           <li className="flex gap-x-2">
             <p className="text-xs text-zinc-500">任务</p>
-            <p className={`px-1 rounded text-xs ${getPriorityClassName()}`}>
-              {getPriorityTooltip(priority)}
-            </p>
+            {priority > 0 && (
+              <p className={`px-1 rounded text-xs ${getPriorityClassName()}`}>
+                {getPriorityTooltip(priority)}
+              </p>
+            )}
+            {!!date && (
+              <p className="text-xs text-zinc-500">{dayjs(date).format("MM月DD日HH:mm")}</p>
+            )}
           </li>
         </ul>
       </div>

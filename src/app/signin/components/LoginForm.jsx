@@ -13,15 +13,13 @@ export default function LoginForm() {
 
     try {
       const result = await axios.post("/api/login", {
-        email: "admin",
+        email: "admin1",
         password: "admin",
       });
       console.log(result);
       if (result.status === 200) {
-        localStorage.setItem('token', result.data.token); // 这个实际上是登陆成功后返回的token
+        localStorage.setItem("token", result.data.token); // 这个实际上是登陆成功后返回的token
         router.replace("/views/today");
-      } else {
-        throw new Error('login failed');
       }
     } catch (err) {
       console.error(err);
@@ -30,7 +28,13 @@ export default function LoginForm() {
 
   return (
     <Fragment>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }} name="login-form">
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit}
+        sx={{ mt: 1 }}
+        name="login-form"
+      >
         <TextField
           margin="normal"
           required

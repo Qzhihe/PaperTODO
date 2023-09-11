@@ -3,21 +3,6 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faSun } from "@fortawesome/free-regular-svg-icons";
-import {
-  Box,
-  Card,
-  Typography,
-  Divider,
-  Tooltip,
-  Catalog,
-} from "@mui/material";
-import {
-  faTrashCan,
-  faCircleNotch,
-  faCircleCheck,
-  faChevronDown,
-  faCalendarDays,
-} from "@fortawesome/free-solid-svg-icons";
 
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
