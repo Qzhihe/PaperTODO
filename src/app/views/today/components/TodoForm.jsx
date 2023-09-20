@@ -11,6 +11,7 @@ import DTRPicker from "./DTRPicker";
 import TitleInput from "./TitleInput";
 import PriorityPicker from "./PriorityPicker";
 import { useTodoContext } from "@/contexts/TodoContext";
+import { getSession } from "next-auth/react";
 
 export const FormContext = createContext(null);
 
@@ -48,6 +49,7 @@ function reducer(state, action) {
 
 export default function TodoForm() {
   const { todos, setTodos } = useTodoContext();
+
   const [formData, dispatch] = useReducer(reducer, {
     title: "",
     priority: 0,
@@ -67,8 +69,10 @@ export default function TodoForm() {
     if (ev.key === "Enter" && formData.title !== "") {
       ev.preventDefault();
 
+      const session = await getSession();
+
       const { data } = await axios.post("/api/todo", {
-        usrEmail: "admin",
+        userId: session?.user?.id,
         timestamp: dayjs().locale("zh-cn"),
         ...formData,
       });

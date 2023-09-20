@@ -47,9 +47,9 @@ export default function Page() {
       <div className="flex flex-col justify-between w-full min-h-full px-16 py-8 bg-[url('/sunset.jpg')] bg-cover bg-center bg-no-repeat">
         <header className="grid auto-rows-min grid-cols-12 justify-items-end items-center shadow-none bg-none">
           <hr className="w-full col-span-12 border-black" />
-          <Link className="col-start-11 text-black no-underline" href="/signin">
+          <a className="col-start-11 text-black no-underline" href="/api/auth/signin">
             Sign In
-          </Link>
+          </a>
           <a
             className="text-black"
             target="_blank"
