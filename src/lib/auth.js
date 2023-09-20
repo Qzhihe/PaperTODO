@@ -53,7 +53,6 @@ export const authConfig = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      console.log(url, baseUrl);
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       } else if (new URL(url).origin === baseUrl) {
