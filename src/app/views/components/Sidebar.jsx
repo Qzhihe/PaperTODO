@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SidebarItem from './UI/SidebarItem'
 
 export default function Sidebar() {
-  const viewsPath = path.join(process.cwd(), "src/app/views");
+  const viewsPath = path.join(process.cwd(), "/views");
   const viewsDir = fs.readdirSync(viewsPath);
 
   const routesUnderViews = viewsDir.reduce((prev, cur) => {
