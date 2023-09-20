@@ -2,15 +2,16 @@
 
 import dayjs from "dayjs";
 import axios from "axios";
-import { createContext, useReducer } from "react";
-import { IconButton, Tooltip } from "@mui/material";
+import { createContext, useMemo, useReducer } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { faPlus, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
+import DTRPicker from "./DTRPicker";
 import TitleInput from "./TitleInput";
 import PriorityPicker from "./PriorityPicker";
 import { useTodoContext } from "@/contexts/TodoContext";
+import { getSession } from "next-auth/react";
 
 export const FormContext = createContext(null);
 
@@ -28,10 +29,19 @@ function reducer(state, action) {
         priority: action.nextPriority,
       };
     }
+    case "changed_dtr": {
+      return {
+        ...state,
+        date: action.nextDate,
+        reminder: action.nextReminder,
+      };
+    }
     case "commited_form": {
       return {
         title: "",
         priority: 0,
+        date: null,
+        reminder: null,
       };
     }
   }
@@ -39,14 +49,30 @@ function reducer(state, action) {
 
 export default function TodoForm() {
   const { todos, setTodos } = useTodoContext();
-  const [formData, dispatch] = useReducer(reducer, { title: "", priority: 0 });
+
+  const [formData, dispatch] = useReducer(reducer, {
+    title: "",
+    priority: 0,
+    date: null,
+    reminder: null,
+  });
+
+  const initialDTR = useMemo(
+    () => ({
+      date: formData.date,
+      reminder: formData.reminder,
+    }),
+    [formData.date, formData.reminder]
+  );
 
   async function handleKeyDown(ev) {
     if (ev.key === "Enter" && formData.title !== "") {
       ev.preventDefault();
 
+      const session = await getSession();
+
       const { data } = await axios.post("/api/todo", {
-        usrEmail: "admin",
+        userId: session?.user?.id,
         timestamp: dayjs().locale("zh-cn"),
         ...formData,
       });
@@ -74,11 +100,7 @@ export default function TodoForm() {
               <PriorityPicker initialPriority={formData.priority} />
             </li>
             <li>
-              <Tooltip title={"设置时间"}>
-                <IconButton>
-                  <FontAwesomeIcon className="w-4 h-4" icon={faCalendarDays} />
-                </IconButton>
-              </Tooltip>
+              <DTRPicker initialDTR={initialDTR} />
             </li>
           </ul>
         </div>

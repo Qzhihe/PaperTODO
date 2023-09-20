@@ -55,9 +55,7 @@ const PriorityPicker = ({ initialPriority }) => {
         onClose={handleClose}
         MenuListProps={{
           disablePadding: true,
-          sx: {
-            padding: "1rem",
-          },
+          sx: { padding: "1rem" },
         }}
       >
         <li className="flex flex-col gap-y-2">

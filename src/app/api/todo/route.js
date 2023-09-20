@@ -1,14 +1,18 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+import { useServerSession } from "@/lib/auth";
+
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const todoId = searchParams.get("id");
+  const { searchParams } = new URL(request.url),
+    todoId = searchParams.get("id");
+
+  const session = await useServerSession();
 
   try {
-    let { todos } = await db.user.findUnique({
+    const { todos } = await db.user.findUnique({
       where: {
-        email: "admin",
+        id: session?.user?.id,
       },
       include: {
         todos: {
@@ -19,11 +23,14 @@ export async function GET(request) {
       },
     });
 
-    if (todoId !== "") {
-      todos = todos.filter((todo) => todo.id === todoId);
+    if (!todoId) {
+      return NextResponse.json(todos, { status: 200 });
     }
 
-    return NextResponse.json(todos, { status: 200 });
+    return NextResponse.json(
+      todos.filter((todo) => todo.id === todoId),
+      { status: 200 }
+    );
   } catch (err) {
     console.log(err);
   }
@@ -33,11 +40,16 @@ export async function POST(request) {
   try {
     const payload = await request.json();
 
+    let start = performance.now();
+    // 极其耗时
     const result = await db.todo.create({
       data: {
         ...payload,
       },
     });
+    let end = performance.now();
+
+    console.log("添加TODO耗时为: ", ((end - start) / 1000).toFixed(3), "s");
 
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
