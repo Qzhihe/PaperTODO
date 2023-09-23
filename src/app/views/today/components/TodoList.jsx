@@ -10,22 +10,23 @@ import { faCircleNotch, faBell } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "@mui/material";
 
 import { useTodoContext } from "@/contexts/TodoContext";
-import { getPriorityTooltip } from "@/lib/priorityUtils";
+import { getPriorityClassName, getPriorityTooltip } from "@/lib/priorityUtils";
 
-export default function TodoList() {
-  const { todos } = useTodoContext();
+export default function TodoList(props) {
+    const { data } = props;
+    const { todos } = useTodoContext();
 
-  useEffect(() => {
-    console.log("TodoList 渲染", todos);
-  });
+    useEffect(() => {
+        console.log("TodoList 渲染");
+    });
 
-  return (
-    <ul className="flex flex-col">
-      {todos.map((item) => (
-        <TodoItem key={item.id} initialTodo={item} />
-      ))}
-    </ul>
-  );
+    return (
+        <ul className="flex flex-col">
+            {(data !== undefined ? (data) : (todos)).map((item) => (
+                <TodoItem key={item.id} initialTodo={item} />
+            ))}
+        </ul>
+    );
 }
 
 const TodoItem = ({ initialTodo }) => {
@@ -49,46 +50,49 @@ const TodoItem = ({ initialTodo }) => {
     }
   }
 
-  return (
-    <li className="card mb-2">
-      <Link
-        className="flex shrink-0 items-center gap-x-4 w-full h-14 px-5 cursor-pointer select-none"
-        href={`/views/today/${id}`}
-      >
-        <FontAwesomeIcon
-          className="w-5 h-5 text-orange-500"
-          icon={faCircleNotch}
-        />
+    return (
+        <li className="card mb-2">
+            <Link
+                className="flex shrink-0 items-center gap-x-4 w-full h-14 px-5 cursor-pointer select-none"
+                href={`/views/today/${id}`}
+            >
+                <FontAwesomeIcon
+                    className="w-5 h-5 text-orange-500"
+                    icon={faCircleNotch}
+                />
 
-        <div className="flex flex-col justify-center h-full">
-          <p className="text-sm">{title}</p>
-          <ul>
-            <li className="flex gap-x-1 items-center">
-              <p className="text-xs text-zinc-500">任务</p>
-              {!!priority && (
-                <p className={`px-1 rounded text-xs ${getPriorityClassName()}`}>
-                  {getPriorityTooltip(priority)}
-                </p>
-              )}
-              {!!date && (
-                <p className="text-xs text-zinc-500">
-                  {dayjs(date).format("MM月DD日HH:mm")}
-                </p>
-              )}
-              {!!reminder && (
-                <Tooltip
-                  title={`提前${dayjs(date).diff(reminder, "minute")}分钟`}
-                >
-                  <FontAwesomeIcon
-                    className="w-3 h-3 text-orange-500"
-                    icon={faBell}
-                  />
-                </Tooltip>
-              )}
-            </li>
-          </ul>
-        </div>
-      </Link>
-    </li>
-  );
+                <div className="flex flex-col justify-center h-full">
+                    <p className="text-sm">{title}</p>
+                    <ul>
+                        <li className="flex gap-x-1 items-center">
+                            <p className="text-xs text-zinc-500">任务</p>
+                            {!!priority && (
+                                <p className={`px-1 rounded text-xs ${priorityClassName}`}>
+                                    {getPriorityTooltip(priority)}
+                                </p>
+                            )}
+                            {!!date && (
+                                <p className="text-xs text-zinc-500">
+                                    {dayjs(date).format("MM月DD日HH:mm")}
+                                </p>
+                            )}
+                            {!!reminder && (
+                                <Tooltip
+                                    title={`提前${dayjs(date).diff(
+                                        reminder,
+                                        "minute"
+                                    )}分钟`}
+                                >
+                                    <FontAwesomeIcon
+                                        className="w-3 h-3 text-orange-500"
+                                        icon={faBell}
+                                    />
+                                </Tooltip>
+                            )}
+                        </li>
+                    </ul>
+                </div>
+            </Link>
+        </li>
+    );
 };

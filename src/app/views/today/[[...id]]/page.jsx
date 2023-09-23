@@ -4,7 +4,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faSun } from "@fortawesome/free-regular-svg-icons";
-import { faCircleNotch, faFlag } from "@fortawesome/free-solid-svg-icons";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 import { db } from "@/lib/db";
 import TodoForm from "../components/TodoForm";

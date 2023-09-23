@@ -24,7 +24,7 @@ export default function Page() {
         <OAuthList />
 
         <div className="flex justify-between w-full">
-          <a className="text-sm">{"没有账号？"}</a>
+          <a className="text-sm">{"其他登录"}</a>
           <Link className="text-sm" href="/">
             {"返回首页"}
           </Link>
