@@ -2,71 +2,28 @@
 
 import dayjs from "dayjs";
 import axios from "axios";
-import { createContext, useMemo, useReducer } from "react";
+import { getSession } from "next-auth/react";
+import { createContext, useReducer } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import DTRPicker from "./DTRPicker";
 import TitleInput from "./TitleInput";
+import DatePicker from "./DatePicker";
+import { Todo, reducer } from "@/lib/Todo";
 import PriorityPicker from "./PriorityPicker";
+import ReminderPicker from "./ReminderPicker";
 import { useTodoContext } from "@/contexts/TodoContext";
-import { getSession } from "next-auth/react";
 
 export const FormContext = createContext(null);
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "changed_title": {
-      return {
-        ...state,
-        title: action.nextTitle,
-      };
-    }
-    case "changed_priority": {
-      return {
-        ...state,
-        priority: action.nextPriority,
-      };
-    }
-    case "changed_dtr": {
-      return {
-        ...state,
-        date: action.nextDate,
-        reminder: action.nextReminder,
-      };
-    }
-    case "commited_form": {
-      return {
-        title: "",
-        priority: 0,
-        date: null,
-        reminder: null,
-      };
-    }
-  }
-}
 
 export default function TodoForm() {
   const { todos, setTodos } = useTodoContext();
 
-  const [formData, dispatch] = useReducer(reducer, {
-    title: "",
-    priority: 0,
-    date: null,
-    reminder: null,
-  });
-
-  const initialDTR = useMemo(
-    () => ({
-      date: formData.date,
-      reminder: formData.reminder,
-    }),
-    [formData.date, formData.reminder]
-  );
+  const [nextTodo, dispatch] = useReducer(reducer, new Todo());
 
   async function handleKeyDown(ev) {
-    if (ev.key === "Enter" && formData.title !== "") {
+    if (ev.key === "Enter" && nextTodo.title !== "") {
       ev.preventDefault();
 
       const session = await getSession();
@@ -74,7 +31,7 @@ export default function TodoForm() {
       const { data } = await axios.post("/api/todo", {
         userId: session?.user?.id,
         timestamp: dayjs().locale("zh-cn"),
-        ...formData,
+        ...nextTodo,
       });
 
       setTodos([data, ...todos]);
@@ -91,16 +48,25 @@ export default function TodoForm() {
       >
         <div className="flex items-center gap-x-2 w-full h-14">
           <FontAwesomeIcon className="w-5 h-5 text-orange-500" icon={faPlus} />
-          <TitleInput initialTitle={formData.title} />
+          <TitleInput initialTitle={nextTodo.title} />
         </div>
         <hr />
         <div className="flex items-center h-8">
           <ul className="flex gap-x-3">
             <li>
-              <PriorityPicker initialPriority={formData.priority} />
+              <PriorityPicker initialPriority={nextTodo.priority} />
             </li>
             <li>
-              <DTRPicker initialDTR={initialDTR} />
+              <DatePicker
+                originReminder={nextTodo.reminder}
+                initialDate={nextTodo.date}
+              />
+            </li>
+            <li>
+              <ReminderPicker
+                originDate={nextTodo.date}
+                initialReminder={nextTodo.reminder}
+              />
             </li>
           </ul>
         </div>

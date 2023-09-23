@@ -31,6 +31,10 @@ export default function TodoList() {
 const TodoItem = ({ initialTodo }) => {
   const { id, title, priority, date, reminder } = initialTodo;
 
+  useEffect(() => {
+    // console.log("TodoItem 渲染");
+  })
+
   function getPriorityClassName() {
     switch (priority) {
       case 1: {

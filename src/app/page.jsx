@@ -45,18 +45,27 @@ export default function Page() {
   return (
     <Fragment>
       <div className="flex flex-col justify-between w-full min-h-full px-16 py-8 bg-[url('/sunset.jpg')] bg-cover bg-center bg-no-repeat">
-        <header className="grid auto-rows-min grid-cols-12 justify-items-end items-center shadow-none bg-none">
+        <header className="flex flex-col items-center shadow-none bg-none">
           <hr className="w-full col-span-12 border-black" />
-          <a className="col-start-11 text-black no-underline" href="/api/auth/signin">
-            Sign In
-          </a>
-          <a
-            className="text-black"
-            target="_blank"
-            href="https://github.com/Qzhihe/Easy-TODO"
-          >
-            Github
-          </a>
+          <ul className="flex w-full justify-end gap-4">
+            <li>
+              <a
+                className="col-start-11 text-black no-underline"
+                href="/api/auth/signin"
+              >
+                Sign In
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-black"
+                target="_blank"
+                href="https://github.com/Qzhihe/Easy-TODO"
+              >
+                Github
+              </a>
+            </li>
+          </ul>
         </header>
 
         <div className="flex flex-col items-start">

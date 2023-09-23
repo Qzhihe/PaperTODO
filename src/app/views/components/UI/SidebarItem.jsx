@@ -14,7 +14,9 @@ export default function SidebarItem({ data }) {
   }
 
   return (
-    <li className={`flex h-12 ${pathname === href ? "route-active" : ""}`}>
+    <li
+      className={`flex h-12 ${pathname.startsWith(href) ? "route-active" : ""}`}
+    >
       <Button
         onClick={handleRouteChange}
         sx={{

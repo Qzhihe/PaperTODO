@@ -1,7 +1,7 @@
 "use client";
 
-import { IconButton, Tooltip, Menu } from "@mui/material";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
+import { IconButton, Tooltip, Popover } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fragment, memo, useState, useEffect, useContext } from "react";
 
@@ -32,7 +32,7 @@ const PriorityPicker = ({ initialPriority }) => {
     setAnchor(null);
   }
 
-  function handleSelect(priority) {
+  function handleChange(priority) {
     setPriority(priority);
     dispatch({ type: "changed_priority", nextPriority: priority });
     handleClose();
@@ -49,22 +49,21 @@ const PriorityPicker = ({ initialPriority }) => {
         </IconButton>
       </Tooltip>
 
-      <Menu
+      <Popover
         anchorEl={anchor}
         open={!!anchor}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        slotProps={{ paper: { sx: { padding: "1rem" } } }}
         onClose={handleClose}
-        MenuListProps={{
-          disablePadding: true,
-          sx: { padding: "1rem" },
-        }}
       >
-        <li className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2">
           <p className="text-sm text-zinc-400">优先级</p>
           <ul className="flex gap-x-1">
             {[3, 2, 1, 0].map((item) => {
               const tooltip = getPriorityTitle(item, "zh"),
-                titleEn = getPriorityTitle(item, "en"),
                 isActive = item === priority;
+
+              const iconClassName = `priority-${getPriorityTitle(item, "en")}`;
 
               return (
                 <Fragment key={item}>
@@ -73,10 +72,10 @@ const PriorityPicker = ({ initialPriority }) => {
                       className={`priority_item hover:bg-zinc-100 ${
                         isActive ? "priority_item-active" : ""
                       }`}
-                      onClick={() => handleSelect(item)}
+                      onClick={() => handleChange(item)}
                     >
                       <FontAwesomeIcon
-                        className={`absolute w-4 h-4 priority-${titleEn}`}
+                        className={`absolute w-4 h-4 ${iconClassName}`}
                         icon={faFlag}
                       />
                     </li>
@@ -85,8 +84,8 @@ const PriorityPicker = ({ initialPriority }) => {
               );
             })}
           </ul>
-        </li>
-      </Menu>
+        </div>
+      </Popover>
     </Fragment>
   );
 };
