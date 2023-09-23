@@ -9,6 +9,22 @@ import { Fragment } from "react";
 import TodoList from "../../today/components/TodoList";
 
 export default function FourQuadrant() {
+    return (
+        <Fragment>
+            <div className="grid grid-rows-2 grid-cols-2 place-items-center gap-4 p-6 overflow-hidden h-full">
+                <Quadrant priority={3}></Quadrant>
+                <Quadrant priority={2}></Quadrant>
+                <Quadrant priority={1}></Quadrant>
+                <Quadrant priority={0}></Quadrant>
+            </div>
+        </Fragment>
+    );
+}
+
+const Quadrant = (props) => {
+    const { priority } = props;
+    const title = getPriorityMark(priority);
+    const titleEn = getPriorityTitle(priority, "en");
     const { todos } = useTodoContext();
     const getTodosByPriority = (priority) => {
         if (todos.length === 0) {
@@ -18,23 +34,7 @@ export default function FourQuadrant() {
             (item) => !item.isDone && item.priority === priority
         );
     };
-    return (
-        <Fragment>
-            <div className="grid grid-rows-2 grid-cols-2 place-items-center gap-4 p-6 overflow-hidden h-full">
-                <Quadrant priority={3} data={getTodosByPriority(3)}></Quadrant>
-                <Quadrant priority={2} data={getTodosByPriority(2)}></Quadrant>
-                <Quadrant priority={1} data={getTodosByPriority(1)}></Quadrant>
-                <Quadrant priority={0} data={getTodosByPriority(0)}></Quadrant>
-            </div>
-        </Fragment>
-    );
-}
-
-const Quadrant = (props) => {
-    const { priority, data } = props;
-    // const { todos } = useTodoContext();
-    const title = getPriorityMark(priority);
-    const titleEn = getPriorityTitle(priority, "en");
+    const data = getTodosByPriority(priority)
     return (
         <Fragment>
             <Card className="flexm w-full h-full">
@@ -57,7 +57,7 @@ const Quadrant = (props) => {
                         {data.length === 0 ? (
                             <p className="m-auto text-zinc-400">没有任务</p>
                         ) : (
-                            <TodoList data={data} />
+                            <TodoList filter={{priority, isDone: true}} />
                         )}
                     </div>
                 </div>

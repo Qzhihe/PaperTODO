@@ -11,47 +11,74 @@ import { Tooltip } from "@mui/material";
 
 import { useTodoContext } from "@/contexts/TodoContext";
 import { getPriorityClassName, getPriorityTooltip } from "@/lib/priorityUtils";
+import axios from "axios";
 
-export default function TodoList(props) {
-    const { data } = props;
-    const { todos } = useTodoContext();
+export default function TodoList({ filter = {} }) {
+    const { todos, setTodos } = useTodoContext();
 
     useEffect(() => {
-        console.log("TodoList 渲染");
-    });
+        console.log("TodoList 渲染", todos);
+    }, [todos]);
+
+    function handleClick(updateTodo) {
+        console.log("??", updateTodo);
+        const updatedTodos = todos.map((item) => {
+            if (updateTodo.id === item.id) {
+                return updateTodo;
+            } else {
+                return item;
+            }
+        });
+        console.log(updatedTodos);
+        setTodos(...updatedTodos);
+    }
 
     return (
         <ul className="flex flex-col">
-            {(data !== undefined ? (data) : (todos)).map((item) => (
-                <TodoItem key={item.id} initialTodo={item} />
-            ))}
+            {todos
+                .filter((item) => {
+                    for (let key in filter) {
+                        if (item[key] !== filter[key]) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                })
+                .map((item) => (
+                    <TodoItem
+                        key={item.id}
+                        initialTodo={item}
+                        onHandleClick={handleClick}
+                    />
+                ))}
         </ul>
     );
 }
 
-const TodoItem = ({ initialTodo }) => {
-  const { id, title, priority, date, reminder } = initialTodo;
+const TodoItem = ({ initialTodo, onHandleClick }) => {
+    const { id, isDone, title, priority, date, reminder } = initialTodo;
+    const priorityClassName = getPriorityClassName(priority);
 
-  useEffect(() => {
-    // console.log("TodoItem 渲染");
-  })
-
-  function getPriorityClassName() {
-    switch (priority) {
-      case 1: {
-        return "text-blue-500 bg-blue-500/20";
-      }
-      case 2: {
-        return "text-yellow-500 bg-yellow-500/20";
-      }
-      case 3: {
-        return "text-red-500 bg-red-500/20";
-      }
+    async function handleCplt(event) {
+        event.preventDefault();
+        console.log("完成，这里你可以看点击的效果，");
+        try {
+            const { data, status } = await axios.put("/api/todo", {
+                id: id,
+                isDone: isDone,
+            });
+            if (status === 200) {
+                console.log(data);
+                onHandleClick(data);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
-  }
 
     return (
-        <li className="card mb-2">
+        <li className="card mb-2 hover:drop-shadow">
             <Link
                 className="flex shrink-0 items-center gap-x-4 w-full h-14 px-5 cursor-pointer select-none"
                 href={`/views/today/${id}`}
@@ -59,6 +86,7 @@ const TodoItem = ({ initialTodo }) => {
                 <FontAwesomeIcon
                     className="w-5 h-5 text-orange-500"
                     icon={faCircleNotch}
+                    onClick={handleCplt}
                 />
 
                 <div className="flex flex-col justify-center h-full">
@@ -67,7 +95,9 @@ const TodoItem = ({ initialTodo }) => {
                         <li className="flex gap-x-1 items-center">
                             <p className="text-xs text-zinc-500">任务</p>
                             {!!priority && (
-                                <p className={`px-1 rounded text-xs ${priorityClassName}`}>
+                                <p
+                                    className={`px-1 rounded text-xs ${priorityClassName}`}
+                                >
                                     {getPriorityTooltip(priority)}
                                 </p>
                             )}
