@@ -6,7 +6,7 @@ const TodoDetail = (props) => {
   const { initialTodo } = props;
 
   useEffect(() => {
-    console.log("TodoDetail 渲染");
+    console.log("TodoDetail 渲染，你没用这个");
   });
 
   return (

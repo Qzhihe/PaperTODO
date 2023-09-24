@@ -13,7 +13,7 @@ import { useTodoContext } from "@/contexts/TodoContext";
 import { getPriorityTooltip } from "@/lib/priorityUtils";
 import axios from "axios";
 
-export default function TodoList({ filters = {} }) {
+export default function TodoList({ filters = {isDone: false} }) {
     const { todos, setTodos } = useTodoContext();
 
     useEffect(() => {

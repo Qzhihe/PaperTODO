@@ -60,7 +60,7 @@ export default async function page({ params }) {
                 className="w-5 h-5 text-orange-500"
                 icon={faCircleNotch}
               />
-              <div>{dayjs(selectedTodo.date).format("MM月DD日HH:mm")}</div>
+              <div>{dayjs(selectedTodo.date)?.format("M月D日HH:mm")}</div>
               <div>{selectedTodo.priority}</div>
             </div>
             <hr />
