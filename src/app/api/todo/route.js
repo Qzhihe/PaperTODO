@@ -1,19 +1,19 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-// import { useServerSession } from "@/lib/auth";
+import { useServerSession } from "@/lib/auth";
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url),
         todoId = searchParams.get("id");
 
-    // const session = await useServerSesasion();
+    const session = await useServerSession();
 
     try {
         const { todos } = await db.user.findUnique({
             where: {
-                // id: session?.user?.id,
-                id: "650aa4d60aeca5f817eda41d",
+                id: session?.user?.id,
+                // id: "650aa4d60aeca5f817eda41d",
             },
             include: {
                 todos: {

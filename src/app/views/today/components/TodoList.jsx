@@ -10,10 +10,10 @@ import { faCircleNotch, faBell } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from "@mui/material";
 
 import { useTodoContext } from "@/contexts/TodoContext";
-import { getPriorityClassName, getPriorityTooltip } from "@/lib/priorityUtils";
+import { getPriorityTooltip } from "@/lib/priorityUtils";
 import axios from "axios";
 
-export default function TodoList({ filter = {} }) {
+export default function TodoList({ filters = {} }) {
     const { todos, setTodos } = useTodoContext();
 
     useEffect(() => {
@@ -21,7 +21,6 @@ export default function TodoList({ filter = {} }) {
     }, [todos]);
 
     function handleClick(updateTodo) {
-        console.log("??", updateTodo);
         const updatedTodos = todos.map((item) => {
             if (updateTodo.id === item.id) {
                 return updateTodo;
@@ -29,16 +28,16 @@ export default function TodoList({ filter = {} }) {
                 return item;
             }
         });
-        console.log(updatedTodos);
-        setTodos(...updatedTodos);
+        setTodos(updatedTodos);
     }
 
     return (
         <ul className="flex flex-col">
             {todos
                 .filter((item) => {
-                    for (let key in filter) {
-                        if (item[key] !== filter[key]) {
+                    for (let key in filters) {
+                        console.log(key);
+                        if (item[key] !== filters[key]) {
                             return false;
                         }
                     }
@@ -58,18 +57,23 @@ export default function TodoList({ filter = {} }) {
 
 const TodoItem = ({ initialTodo, onHandleClick }) => {
     const { id, isDone, title, priority, date, reminder } = initialTodo;
-    const priorityClassName = getPriorityClassName(priority);
+    const priorityClass =
+        priority === 3
+            ? "priority-high-class"
+            : priority === 2
+            ? "priority-medium-class"
+            : priority === 1
+            ? "priority-low-class"
+            : "";
 
     async function handleCplt(event) {
         event.preventDefault();
-        console.log("完成，这里你可以看点击的效果，");
         try {
             const { data, status } = await axios.put("/api/todo", {
                 id: id,
                 isDone: isDone,
             });
             if (status === 200) {
-                console.log(data);
                 onHandleClick(data);
             }
         } catch (err) {
@@ -96,7 +100,7 @@ const TodoItem = ({ initialTodo, onHandleClick }) => {
                             <p className="text-xs text-zinc-500">任务</p>
                             {!!priority && (
                                 <p
-                                    className={`px-1 rounded text-xs ${priorityClassName}`}
+                                    className={`${priorityClass} px-1 rounded text-xs`}
                                 >
                                     {getPriorityTooltip(priority)}
                                 </p>

@@ -34,10 +34,10 @@ const Quadrant = (props) => {
             (item) => !item.isDone && item.priority === priority
         );
     };
-    const data = getTodosByPriority(priority)
+    const data = getTodosByPriority(priority);
     return (
         <Fragment>
-            <Card className="flexm w-full h-full">
+            <Card className="flex w-full h-full">
                 <div className="flex flex-col gap-4 w-full p-4 bg-[#fafafa]">
                     <div className="flex items-center gap-4 h-5">
                         <FontAwesomeIcon
@@ -57,7 +57,7 @@ const Quadrant = (props) => {
                         {data.length === 0 ? (
                             <p className="m-auto text-zinc-400">没有任务</p>
                         ) : (
-                            <TodoList filter={{priority, isDone: true}} />
+                            <TodoList filters={{ priority, isDone: false }} />
                         )}
                     </div>
                 </div>

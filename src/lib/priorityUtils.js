@@ -26,17 +26,3 @@ export const getPriorityTooltip = (priority) => {
 
     return `${getPriorityTitle(priority, "zh")}优先级`;
 };
-
-export const getPriorityClassName = (priority) => {
-    switch (priority) {
-        case 1: {
-            return "text-blue-500 bg-blue-500/20";
-        }
-        case 2: {
-            return "text-yellow-500 bg-yellow-500/20";
-        }
-        case 3: {
-            return "text-red-500 bg-red-500/20";
-        }
-    }
-};
