@@ -1,5 +1,8 @@
-import { IconButton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { IconButton } from "@mui/material";
+
+import { faClover, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 
 import SidebarItem from "./UI/SidebarItem";
 
@@ -8,15 +11,17 @@ export default function Sidebar() {
     {
       label: "我的一天",
       href: "/views/today",
+      icon: faCalendarCheck,
     },
     {
       label: "四象限",
       href: "/views/four-quadrant",
+      icon: faClover,
     },
   ];
 
   return (
-    <aside className="flex flex-col min-w-[10rem] h-full bg-white shadow-[1px_0_8px_0_rgba(0,0,0,0.1)]">
+    <aside className="hidden flex-col h-full bg-white shadow-[1px_0_8px_0_rgba(0,0,0,0.1)] sm:flex">
       <div className="flex items-end w-full h-16 px-3">
         {false && (
           <IconButton>
@@ -27,7 +32,7 @@ export default function Sidebar() {
 
       <ul>
         {routesUnderViews.map((route, idx) => (
-          <SidebarItem data={route} key={idx} />
+          <SidebarItem value={route} key={idx} />
         ))}
       </ul>
     </aside>
