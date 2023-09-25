@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import FourQuadrant from "../components/FourQuadrant";
+import FourQuadrant from "./components/FourQuadrant";
 
 export default function page() {
     return (
