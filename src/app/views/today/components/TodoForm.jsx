@@ -46,7 +46,7 @@ export default function TodoForm() {
         className="card flex flex-col shrink-0 px-5"
         onKeyDown={handleKeyDown}
       >
-        <div className="flex items-center gap-x-2 w-full h-14">
+        <div className="flex items-center gap-x-2 w-full h-10">
           <FontAwesomeIcon className="w-5 h-5 text-orange-500" icon={faPlus} />
           <TitleInput initialTitle={nextTodo.title} />
         </div>

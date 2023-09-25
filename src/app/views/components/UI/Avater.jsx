@@ -5,7 +5,7 @@ import { Fragment, useState } from "react";
 
 import { Avatar as MuiAvatar, Popover, Button } from "@mui/material";
 
-export default function Avatar({ className = "", src = "" }) {
+export default function Avatar({ src = "" }) {
   const [anchor, setAnchor] = useState(null);
 
   function handleContextMenu(ev) {
@@ -16,11 +16,7 @@ export default function Avatar({ className = "", src = "" }) {
 
   return (
     <Fragment>
-      <MuiAvatar
-        className={className}
-        src={src}
-        onContextMenu={handleContextMenu}
-      />
+      <MuiAvatar src={src} onContextMenu={handleContextMenu} />
       <Popover
         open={!!anchor}
         anchorEl={anchor}

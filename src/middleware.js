@@ -3,20 +3,20 @@ import { withAuth } from "next-auth/middleware";
 
 export default withAuth(
   function middleware(req) {
-    // const baseUrl = req.url;
-    // const isAuthed = !!req.nextauth.token;
-    // const { pathname } = req.nextUrl;
+    const baseUrl = req.url;
+    const isAuthed = !!req.nextauth.token;
+    const { pathname } = req.nextUrl;
 
-    // const sensitiveRoutes = ["/views", "/api/todo"];
-    // const isSensitiveRoute = sensitiveRoutes.some((route) =>
-    //   pathname.startsWith(route)
-    // );
+    const sensitiveRoutes = ["/views", "/api/todo"];
+    const isSensitiveRoute = sensitiveRoutes.some((route) =>
+      pathname.startsWith(route)
+    );
 
-    // if (!isAuthed && isSensitiveRoute) {
-    //   return NextResponse.redirect(new URL("/signin", baseUrl));
-    // } else if (isAuthed && !isSensitiveRoute) {
-    //   return NextResponse.redirect(new URL("/views/today", baseUrl));
-    // }
+    if (!isAuthed && isSensitiveRoute) {
+      return NextResponse.redirect(new URL("/signin", baseUrl));
+    } else if (isAuthed && !isSensitiveRoute) {
+      return NextResponse.redirect(new URL("/views/today", baseUrl));
+    }
 
     return NextResponse.next();
   },

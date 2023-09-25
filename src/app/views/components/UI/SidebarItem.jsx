@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@mui/material";
 import { useRouter, usePathname } from "next/navigation";
 
-export default function SidebarItem({ data }) {
-  const { label, href } = data;
+import { Button } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+export default function SidebarItem({ value: { label, href, icon } }) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -15,22 +15,27 @@ export default function SidebarItem({ data }) {
 
   return (
     <li
-      className={`flex h-12 ${pathname.startsWith(href) ? "route-active" : ""}`}
+      className={`flex h-12 text-zinc-500 ${pathname.startsWith(href) ? "route-active" : ""}`}
     >
       <Button
         onClick={handleRouteChange}
         sx={{
           display: "flex",
-          justifyContent: "start",
+          justifyContent: "center",
+          alignItems: "center",
           width: "100%",
           borderRadius: "none",
-          color: "black",
+          color: "inherit",
           ":hover": {
             backgroundColor: "#f973161a",
           },
+          "@media (min-width: 768px)": {
+            justifyContent: "start"
+          }
         }}
       >
-        <p>{label}</p>
+        <FontAwesomeIcon className="text-inherit" size="xl" icon={icon} />
+        <p className="hidden ml-2 text-black font-normal md:block">{label}</p>
       </Button>
     </li>
   );
